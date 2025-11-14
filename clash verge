@@ -1,0 +1,80 @@
+// Define main function (script entry)
+
+function main(config) {
+
+  // 读取现有的规则
+
+  let oldRules = config.rules;
+
+
+
+  // 定义新的规则
+
+  let newRules = [
+
+    //"DOMAIN-SUFFIX,oracle.com,DIRECT,no-resolve",
+    //"PROCESS-NAME,finalshell.exe,DIRECT"
+    //"DOMAIN-SUFFIX,cloudflare.com,DIRECT,no-resolve",
+    "DOMAIN-SUFFIX,zerotier.com,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,doubao.com,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,zijieapi.com,DIRECT,no-resolve",
+
+    //"DOMAIN-SUFFIX,mcas.ms,DIRECT,no-resolve",
+
+    "DOMAIN-KEYWORD,teams,DIRECT",
+
+    "DOMAIN-KEYWORD,outlook,DIRECT",
+
+    "DOMAIN-KEYWORD,mcas.ms,DIRECT",
+    
+    //"DOMAIN-SUFFIX,microsoft.com,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,901805.xyz,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,901824.xyz,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,examsit.cn,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,mingdao.com,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,flowus.cn,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,speedtest.cn,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,allflow.cn,DIRECT,no-resolve",
+
+    "DOMAIN-SUFFIX,nezha.901824.xyz,DIRECT,no-resolve",
+
+    "IP-CIDR,127.0.0.1/32,DIRECT,no-resolve",
+
+    "IP-CIDR,100.119.192.19/32,DIRECT,no-resolve",
+
+    "IP-CIDR,39.105.217.172/32,DIRECT,no-resolve",
+
+    "IP-CIDR,142.171.203.77/32,DIRECT,no-resolve",
+
+    //"IP-CIDR,148.135.89.75/32,DIRECT,no-resolve"
+
+  ];
+
+
+
+  // 将新的规则添加到现有的规则中
+
+  oldRules = newRules.concat(oldRules);
+
+
+
+  // 更新配置的规则
+
+  config.rules = oldRules;
+
+
+
+  // 返回修改后的配置
+
+  return config;
+
+}
