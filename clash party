@@ -48,6 +48,11 @@ const ruleOptions = {
  * 如果有需要前置的自定义规则，可以自行修改
  */
 const rules = [
+  'DOMAIN-KEYWORD,teams,DIRECT',
+  'DOMAIN-KEYWORD,outlook,DIRECT',
+  'DOMAIN-KEYWORD,mcas.ms,DIRECT',
+  'DOMAIN-KEYWORD,copilot,Proxy',
+  
   'PROCESS-NAME,SunloginClient.exe,DIRECT',
   'PROCESS-NAME,AnyDesk,DIRECT',
   'PROCESS-NAME,AnyDesk.exe,DIRECT',
