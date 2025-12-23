@@ -52,7 +52,6 @@ const rules = [
   'DOMAIN-KEYWORD,outlook,DIRECT',
   'DOMAIN-KEYWORD,mcas.ms,DIRECT',
   'DOMAIN-KEYWORD,copilot,Proxy',
-  
   'PROCESS-NAME,SunloginClient.exe,DIRECT',
   'PROCESS-NAME,AnyDesk,DIRECT',
   'PROCESS-NAME,AnyDesk.exe,DIRECT',
