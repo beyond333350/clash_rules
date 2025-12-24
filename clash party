@@ -14,7 +14,7 @@ function main(config) {
       "exclude-filter": "(?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置",
       name: "AUTO",
       type: "url-test",
-      interval: 300,
+      interval: 86400,
     },
     {
       icon: "https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
@@ -41,7 +41,7 @@ function main(config) {
       filter: "(?i)香港|Hong Kong|HK|🇭🇰",
       name: "HK AUTO",
       type: "url-test",
-      interval: 300,
+      interval: 86400,
     },
     {
       icon: "https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/SG.png",
@@ -50,7 +50,7 @@ function main(config) {
       filter: "(?i)新加坡|Singapore|🇸🇬",
       name: "SG AUTO",
       type: "url-test",
-      interval: 300,
+      interval: 86400,
     },
     {
       icon: "https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/JP.png",
@@ -59,7 +59,7 @@ function main(config) {
       filter: "(?i)日本|Japan|🇯🇵",
       name: "JP AUTO",
       type: "url-test",
-      interval: 300,
+      interval: 86400,
     },
     {
       icon: "https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/US.png",
@@ -68,7 +68,7 @@ function main(config) {
       filter: "(?i)美国|USA|🇺🇸",
       name: "US AUTO",
       type: "url-test",
-      interval: 300,
+      interval: 86400,
     },
     {
       icon: "https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png",
