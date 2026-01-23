@@ -1,0 +1,37 @@
+function main(config) {
+  config["proxy-groups"] = [
+    {
+      name: "AUTO",
+      type: "fallback",     // 改成 fallback，实时切换
+      "include-all": true,  // 包含所有节点
+      interval: 86400,        // 检测间隔（秒），建议设置较短，比如 300 秒
+      icon: "https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png"
+    }
+  ];
+
+  if (!config['rule-providers']) {
+    config['rule-providers'] = {};
+  }
+
+  config["rules"] = [
+    "DOMAIN-KEYWORD,copilot,AUTO",
+    "DOMAIN-KEYWORD,teams,DIRECT",
+    "DOMAIN-KEYWORD,outlook,DIRECT",
+    "DOMAIN-KEYWORD,mcas.ms,DIRECT",
+    "DOMAIN-SUFFIX,cloudflare.com,DIRECT",
+    "DOMAIN-SUFFIX,zerotier.com,DIRECT",
+    "DOMAIN-SUFFIX,doubao.com,DIRECT",
+    "DOMAIN-SUFFIX,zijieapi.com,DIRECT",
+    "DOMAIN-SUFFIX,901805.xyz,DIRECT",
+    "DOMAIN-SUFFIX,901824.xyz,DIRECT",
+    "DOMAIN-SUFFIX,examsit.cn,DIRECT",
+    "DOMAIN-SUFFIX,mingdao.com,DIRECT",
+    "DOMAIN-SUFFIX,flowus.cn,DIRECT",
+    "DOMAIN-SUFFIX,speedtest.cn,DIRECT",
+    "DOMAIN-SUFFIX,allflow.cn,DIRECT",
+    "DOMAIN-SUFFIX,nezha.901824.xyz,DIRECT",
+    "MATCH,AUTO"
+  ];
+
+  return config;
+}
