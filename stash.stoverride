@@ -1,8 +1,6 @@
 name: AUTO 分流优化脚本
-desc: 从 Clash Verge 迁移，实现自动地区分组与 AUTO 自动选路
-# 对应脚本中的静态配置
-argument:
-  - skip-ips=10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.168.0.0/16,198.18.0.0/16,FC00::/7,FE80::/10,::1/128
+desc: 从 Clash Verge 迁移，已修正语法断行问题
+# 如果不需要给脚本传参，argument 这一段可以完全删掉
 
 dns:
   enable: true
@@ -12,9 +10,9 @@ dns:
   nameserver: [119.29.29.29, 223.5.5.5, https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
   fallback: [8.8.8.8, 94.140.14.14, https://dns.google/dns-query, https://dns.adguard-dns.com/dns-query]
 
-# 对应脚本中的分组逻辑
-policy-groups:
-  # 1. 地区自动分组 (使用 Filter 正则，等同于脚本中的 regionDefinitions)
+# 统一使用 proxy-groups 以获得最佳兼容性
+proxy-groups:
+  # 1. 地区自动分组 (Filter 模式)
   - name: HK香港
     type: url-test
     filter: "(?i)港|🇭🇰|hk|hongkong"
@@ -43,7 +41,7 @@ policy-groups:
   - name: AUTO
     type: url-test
     proxies: [HK香港, US美国, JP日本, SG新加坡]
-    include-all-proxies: true # 包含所有节点，作为备选
+    include-all-proxies: true
     url: http://www.gstatic.com/generate_204
     interval: 600
 
@@ -56,16 +54,6 @@ policy-groups:
     type: select
     proxies: [DIRECT, AUTO]
 
-# 对应脚本中的 Rule Providers
-rule-providers:
-  applications:
-    type: http
-    behavior: classical
-    url: https://github.com/DustinWin/ruleset_geodata/raw/refs/heads/mihomo-ruleset/applications.list
-    path: ./ruleset/applications.list
-    interval: 86400
-
-# 对应脚本中的 Rules
 rules:
   - DOMAIN-SUFFIX,901824.xyz,DIRECT
   - DOMAIN-SUFFIX,901805.xyz,DIRECT
@@ -75,7 +63,7 @@ rules:
   - DOMAIN-SUFFIX,iepose.com,DIRECT
   - RULE-SET,applications,下载软件
   
-  # 业务规则 (对应 serviceConfigs)
+  # 业务规则
   - GEOSITE,category-ai-!cn,AUTO
   - DOMAIN-SUFFIX,meta.ai,AUTO
   - GEOSITE,youtube,AUTO
@@ -88,3 +76,12 @@ rules:
   - GEOSITE,cn,国内网站
   - GEOIP,CN,国内网站
   - MATCH,AUTO
+
+# Rule Provider 定义需放在根目录
+rule-providers:
+  applications:
+    type: http
+    behavior: classical
+    url: https://github.com/DustinWin/ruleset_geodata/raw/refs/heads/mihomo-ruleset/applications.list
+    path: ./ruleset/applications.list
+    interval: 86400
