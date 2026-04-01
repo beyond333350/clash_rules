@@ -1,0 +1,90 @@
+name: AUTO 分流优化脚本
+desc: 从 Clash Verge 迁移，实现自动地区分组与 AUTO 自动选路
+# 对应脚本中的静态配置
+argument:
+  - skip-ips=10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.168.0.0/16,198.18.0.0/16,FC00::/7,FE80::/10,::1/128
+
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-filter: ["+.901824.xyz", "+.901805.xyz", "+.359261634.xyz"]
+  nameserver: [119.29.29.29, 223.5.5.5, https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
+  fallback: [8.8.8.8, 94.140.14.14, https://dns.google/dns-query, https://dns.adguard-dns.com/dns-query]
+
+# 对应脚本中的分组逻辑
+policy-groups:
+  # 1. 地区自动分组 (使用 Filter 正则，等同于脚本中的 regionDefinitions)
+  - name: HK香港
+    type: url-test
+    filter: "(?i)港|🇭🇰|hk|hongkong"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+
+  - name: US美国
+    type: url-test
+    filter: "(?i)(?!.*aus)(?=.*(美|🇺🇸|us|usa|american)).*"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+
+  - name: JP日本
+    type: url-test
+    filter: "(?i)日本|🇯🇵|jp|japan"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+
+  - name: SG新加坡
+    type: url-test
+    filter: "(?i)新加坡|🇸🇬|sg|singapore"
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+
+  # 2. 核心 AUTO 分组 (自动选路)
+  - name: AUTO
+    type: url-test
+    proxies: [HK香港, US美国, JP日本, SG新加坡]
+    include-all-proxies: true # 包含所有节点，作为备选
+    url: http://www.gstatic.com/generate_204
+    interval: 600
+
+  # 3. 功能分组
+  - name: 下载软件
+    type: select
+    proxies: [DIRECT, AUTO]
+
+  - name: 国内网站
+    type: select
+    proxies: [DIRECT, AUTO]
+
+# 对应脚本中的 Rule Providers
+rule-providers:
+  applications:
+    type: http
+    behavior: classical
+    url: https://github.com/DustinWin/ruleset_geodata/raw/refs/heads/mihomo-ruleset/applications.list
+    path: ./ruleset/applications.list
+    interval: 86400
+
+# 对应脚本中的 Rules
+rules:
+  - DOMAIN-SUFFIX,901824.xyz,DIRECT
+  - DOMAIN-SUFFIX,901805.xyz,DIRECT
+  - DOMAIN-SUFFIX,359261634.xyz,DIRECT
+  - PROCESS-NAME-REGEX,(?i).*Oray.*,DIRECT
+  - PROCESS-NAME-REGEX,(?i).*Sunlogin.*,DIRECT
+  - DOMAIN-SUFFIX,iepose.com,DIRECT
+  - RULE-SET,applications,下载软件
+  
+  # 业务规则 (对应 serviceConfigs)
+  - GEOSITE,category-ai-!cn,AUTO
+  - DOMAIN-SUFFIX,meta.ai,AUTO
+  - GEOSITE,youtube,AUTO
+  - GEOIP,telegram,AUTO
+  - GEOSITE,netflix,AUTO
+  - GEOSITE,google,AUTO
+  - GEOSITE,github,AUTO
+  
+  # 兜底规则
+  - GEOSITE,cn,国内网站
+  - GEOIP,CN,国内网站
+  - MATCH,AUTO
